@@ -3,10 +3,9 @@ import { useState } from "react";
 export function Builds(props) {
   console.log(props);
 
-  const updateBuild = (event) => async () => {
-    event.preventDefault();
+  const updateBuild = async () => {
     try {
-      fetch(props.url, {
+      await fetch(props.url, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -15,7 +14,7 @@ export function Builds(props) {
         body: JSON.stringify(build),
       });
 
-      console.info("Build deleted", props.url);
+      console.info("Build updated", props.url);
       await props.loadJson();
       console.info("Reloaded builds");
       console.log("Builds updated");
@@ -28,6 +27,12 @@ export function Builds(props) {
   const [vis, setVis] = useState(true);
   const editBuild = () => {
     setVis((prev) => !prev);
+    setbuilds({
+      title: props.build.title,
+      theme: props.build.theme,
+      height: props.build.height,
+      author: props.build.author,
+    });
   };
 
   //value setters
@@ -45,8 +50,8 @@ export function Builds(props) {
 
   //sending your input to brazil
   const editBuildFinish = () => {
-    updateBuild(editBuild);
     setVis((prev) => !prev);
+    updateBuild();
   };
 
   //sending your input to the bin
@@ -101,11 +106,11 @@ export function Builds(props) {
               onChange={onChangeHandler}
             />
           </p>
+          <button onClick={editBuildCancel}>Cancel</button>{" "}
+          <button onClick={editBuildFinish}>Finish Edit</button>
         </form>
       )}
       {vis && <button onClick={editBuild}>Edit</button>}
-      {!vis && <button onClick={editBuildCancel}>Cancel</button>}
-      {!vis && <button onClick={editBuildFinish}>Finish Edit</button>}
     </section>
   );
 }

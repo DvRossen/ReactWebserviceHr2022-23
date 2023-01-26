@@ -4,6 +4,7 @@ import { PostEntry } from "./NewEntry";
 
 export default function App() {
   const [builds, setBuilds] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   const loadJson = () => {
     console.log("loading data");
@@ -14,7 +15,8 @@ export default function App() {
       },
     })
       .then((response) => response.json())
-      .then((result) => setBuilds(result.items));
+      .then((result) => setBuilds(result.items))
+      .then(() => setLoaded(true));
   };
 
   const deleteBuild = (url) => async () => {
@@ -40,17 +42,24 @@ export default function App() {
       build={value}
       deleteBuild={deleteBuild(value._links.self.href)}
       url={value._links.self.href}
-      loadJson={loadJson()}
+      loadJson={loadJson}
     />
   ));
 
   useEffect(loadJson, []);
-
   return (
-    <section>
-      <h1>My Builds</h1>
-      <PostEntry buildRefreshHandler={loadJson} />
-      {showBuilds}
-    </section>
+    <body>
+      <header className="App-Header">
+        <h1>My Builds</h1>
+      </header>
+      <section>
+        <PostEntry buildRefreshHandler={loadJson} />
+        {loaded && builds.length === 0 ? (
+          <h1>No builds currently available</h1>
+        ) : (
+          showBuilds
+        )}
+      </section>
+    </body>
   );
 }
