@@ -1,6 +1,28 @@
 import { useState } from "react";
+
 export function Builds(props) {
   console.log(props);
+
+  const updateBuild = (event) => async () => {
+    event.preventDefault();
+    try {
+      fetch(props.url, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editbuild),
+      });
+
+      console.info("Build deleted", props.url);
+      await props.loadJson();
+      console.info("Reloaded builds");
+      console.log("Builds updated");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //visiblity vriables
   const [vis, setVis] = useState(true);
@@ -9,25 +31,21 @@ export function Builds(props) {
   };
 
   //value setters
-  const [build, setbuilds] = useState({
+  const [editbuild, seteditbuilds] = useState({
     title: "",
     theme: "",
     height: "",
     author: "",
   });
-  //   const [title, settitle] = useState(props.build.title);
-  const [theme, settheme] = useState(props.build.theme);
-  const [height, setheight] = useState(props.build.height);
-  const [author, setauthor] = useState(props.build.author);
 
   //it handles the change
   const onChangeHandler = (event) => {
-    setbuilds({ ...build, [event.target.name]: event.target.value });
+    seteditbuilds({ ...editbuild, [event.target.name]: event.target.value });
   };
 
   //sending your input to brazil
   const editBuildFinish = () => {
-    // props.updateBuild;
+    console.log(props.url);
     setVis((prev) => !prev);
   };
 
@@ -51,7 +69,7 @@ export function Builds(props) {
             Title:{" "}
             <input
               type="text"
-              value={build.title}
+              value={editbuild.title}
               name="title"
               onChange={onChangeHandler}
             />
@@ -60,7 +78,7 @@ export function Builds(props) {
             Theme:{" "}
             <input
               type="text"
-              value={build.theme}
+              value={editbuild.theme}
               name="theme"
               onChange={onChangeHandler}
             />
@@ -68,9 +86,8 @@ export function Builds(props) {
           <p>
             Height:{" "}
             <input
-              placeholder={props.build.height}
               type="text"
-              value={build.height}
+              value={editbuild.height}
               name="height"
               onChange={onChangeHandler}
             />
@@ -79,7 +96,7 @@ export function Builds(props) {
             Author:{" "}
             <input
               type="text"
-              value={build.author}
+              value={editbuild.author}
               name="author"
               onChange={onChangeHandler}
             />
@@ -88,7 +105,7 @@ export function Builds(props) {
       )}
       {vis && <button onClick={editBuild}>Edit</button>}
       {!vis && <button onClick={editBuildCancel}>Cancel</button>}
-      {!vis && <button onClick={editBuildFinish}>Done</button>}
+      {!vis && <button onClick={editBuildFinish}>Finish Edit</button>}
     </section>
   );
 }

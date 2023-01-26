@@ -17,25 +17,6 @@ export default function App() {
       .then((result) => setBuilds(result.items));
   };
 
-  const updateBuild = (url) => async () => {
-    try {
-      fetch(url, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.info("Build deleted", url);
-      await loadJson();
-      console.info("Reloaded builds");
-      console.log("Builds updated");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const deleteBuild = (url) => async () => {
     try {
       await fetch(url, {
@@ -58,7 +39,8 @@ export default function App() {
       key={value.id}
       build={value}
       deleteBuild={deleteBuild(value._links.self.href)}
-      updatebuild={updateBuild(value._links.self.href)}
+      url={value._links.self.href}
+      loadJson={loadJson()}
     />
   ));
 
