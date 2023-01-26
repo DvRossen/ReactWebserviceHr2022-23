@@ -1,25 +1,74 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { Builds } from "./Builds";
+import { PostEntry } from "./NewEntry";
 
-function App() {
+export default function App() {
+  const [builds, setBuilds] = useState([]);
+
+  const loadJson = () => {
+    console.log("loading data");
+    fetch("http://145.24.222.157:8000/builds", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => setBuilds(result.items));
+  };
+
+  const updateBuild = (url) => async () => {
+    try {
+      fetch(url, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.info("Build deleted", url);
+      await loadJson();
+      console.info("Reloaded builds");
+      console.log("Builds updated");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteBuild = (url) => async () => {
+    try {
+      await fetch(url, {
+        method: "DELETE",
+        headers: {
+          accept: "application/json",
+        },
+      });
+      console.info("Build deleted", url);
+      await loadJson();
+      console.info("Reloaded builds");
+      console.log("deletion complete");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const showBuilds = builds.map((value, key) => (
+    <Builds
+      key={value.id}
+      build={value}
+      deleteBuild={deleteBuild(value._links.self.href)}
+      updatebuild={updateBuild(value._links.self.href)}
+    />
+  ));
+
+  useEffect(loadJson, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section>
+      <h1>My Builds</h1>
+      <PostEntry buildRefreshHandler={loadJson} />
+      {showBuilds}
+    </section>
   );
 }
-
-export default App;
