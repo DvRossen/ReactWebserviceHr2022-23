@@ -12,7 +12,7 @@ export function Builds(props) {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(editbuild),
+        body: JSON.stringify(build),
       });
 
       console.info("Build deleted", props.url);
@@ -31,7 +31,7 @@ export function Builds(props) {
   };
 
   //value setters
-  const [editbuild, seteditbuilds] = useState({
+  const [build, setbuilds] = useState({
     title: "",
     theme: "",
     height: "",
@@ -40,12 +40,12 @@ export function Builds(props) {
 
   //it handles the change
   const onChangeHandler = (event) => {
-    seteditbuilds({ ...editbuild, [event.target.name]: event.target.value });
+    setbuilds({ ...build, [event.target.name]: event.target.value });
   };
 
   //sending your input to brazil
   const editBuildFinish = () => {
-    console.log(props.url);
+    updateBuild(editBuild);
     setVis((prev) => !prev);
   };
 
@@ -69,7 +69,7 @@ export function Builds(props) {
             Title:{" "}
             <input
               type="text"
-              value={editbuild.title}
+              value={build.title}
               name="title"
               onChange={onChangeHandler}
             />
@@ -78,7 +78,7 @@ export function Builds(props) {
             Theme:{" "}
             <input
               type="text"
-              value={editbuild.theme}
+              value={build.theme}
               name="theme"
               onChange={onChangeHandler}
             />
@@ -87,7 +87,7 @@ export function Builds(props) {
             Height:{" "}
             <input
               type="text"
-              value={editbuild.height}
+              value={build.height}
               name="height"
               onChange={onChangeHandler}
             />
@@ -96,7 +96,7 @@ export function Builds(props) {
             Author:{" "}
             <input
               type="text"
-              value={editbuild.author}
+              value={build.author}
               name="author"
               onChange={onChangeHandler}
             />
