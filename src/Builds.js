@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function Builds(props) {
   console.log(props);
@@ -60,13 +60,12 @@ export function Builds(props) {
   };
 
   return (
-    <section>
+    <React.Fragment>
       <h3>{props.build.title}</h3>
       <p>
         Theme: {props.build.theme} Height: {props.build.height}
       </p>
       <p>Author: {props.build.author}</p>
-      <button onClick={props.deleteBuild}>Delete </button>{" "}
       {!vis && (
         <form>
           <h2> Edit {props.build.title} </h2>
@@ -111,6 +110,6 @@ export function Builds(props) {
         </form>
       )}
       {vis && <button onClick={editBuild}>Edit</button>}
-    </section>
+    </React.Fragment>
   );
 }
