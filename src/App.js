@@ -63,7 +63,7 @@ export default function App() {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <header className="App-Header">
         <h1>My Builds</h1>
       </header>
@@ -78,6 +78,6 @@ export default function App() {
         )}
         {loading ? <div>Loading...</div> : null}
       </section>
-    </React.Fragment>
+    </>
   );
 }

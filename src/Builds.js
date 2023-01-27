@@ -104,9 +104,9 @@ export function Builds(props) {
               name="author"
               onChange={onChangeHandler}
             />
-          </p>
-          <button onClick={editBuildCancel}>Cancel</button>{" "}
-          <button onClick={editBuildFinish}>Finish Edit</button>
+          </p>{" "}
+          <button onClick={editBuildFinish}>Finish Edit</button>{" "}
+          <button onClick={editBuildCancel}>Cancel</button>
         </form>
       )}
       {vis && <button onClick={editBuild}>Edit</button>}

@@ -93,8 +93,8 @@ export function PostEntry(props) {
             />
           </p>{" "}
           <p>
-            <button onClick={postCancel}>Cancel</button>{" "}
-            <button onClick={postEntry}>Finish Post</button>
+            <button onClick={postEntry}>Finish Post</button>{" "}
+            <button onClick={postCancel}>Cancel</button>
           </p>
         </form>
       )}
